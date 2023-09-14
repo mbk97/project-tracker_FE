@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Layout from "./components/layout/Layout";
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Homepage from "./pages/Homepage";
+import Projects from "./pages/Projects";
+import Tasks from "./pages/Tasks";
+import Progress from "./pages/Progress";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Layout />}>
+          <Route path="" element={<Homepage />} />
+          <Route path="project" element={<Projects />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="progress" element={<Progress />} />
+        </Route>
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
     </div>
   );
 }
