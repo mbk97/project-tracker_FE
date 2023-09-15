@@ -1,0 +1,14 @@
+a.active-menu {
+  color: #000000;
+  background-color: #efefef;
+  width: 200px;
+  padding: 7px 0;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+@media (max-width: 400px) {
+  a.active-menu {
+    width: 150px;
+  }
+}

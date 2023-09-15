@@ -7,6 +7,7 @@ import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Progress from "./pages/Progress";
 import ErrorPage from "./pages/ErrorPage";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="project" element={<Projects />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="progress" element={<Progress />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
