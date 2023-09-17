@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Navbar from "../navbar/Navbar";
-import SideBar from "../sidebar/SideBar";
 import { Outlet } from "react-router-dom";
 import "./style.css";
+import SideBar from "components/sidebar/SideBar";
+import Navbar from "components/navbar/Navbar";
 
 const Layout = ({ children }: any) => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -16,9 +16,13 @@ const Layout = ({ children }: any) => {
     <div>
       <div className="flex relative">
         <div
-          className={`md:flex-[20%]  hidden lg:block bg-[#ffffff]  border-r h-[100vh]  ${checkActiveMobile}`}
+          className={`md:flex-[20%]  hidden lg:block h-[100%]  ${checkActiveMobile}`}
         >
-          <SideBar handleOpenMenu={handleOpenMenu} />
+          <div
+            className={` fixed bg-[#ffffff]   border-r-2  h-[100%] w-[300px]`}
+          >
+            <SideBar handleOpenMenu={handleOpenMenu} />
+          </div>
         </div>
         <div className="md:flex-[80%]  flex-[100%]  h-[100vh]">
           <Navbar handleOpenMenu={handleOpenMenu} />

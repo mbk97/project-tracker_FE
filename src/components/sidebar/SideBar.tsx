@@ -1,7 +1,7 @@
 import { AiOutlineClose } from "react-icons/ai";
 import logo from "../../assets/svg/logo.svg";
 import { navItems } from "./data";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./style.css";
 interface IProps {
   handleOpenMenu: () => void;
@@ -9,7 +9,7 @@ interface IProps {
 
 const SideBar = ({ handleOpenMenu }: IProps) => {
   return (
-    <div className="mt-[30px]">
+    <div className="lg:mt-[30px]    pr-5  h-[100%]">
       <div className="lg:hidden  mb-5 flex mr-4 justify-end">
         <AiOutlineClose
           onClick={handleOpenMenu}

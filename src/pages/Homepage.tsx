@@ -1,10 +1,7 @@
-import React from "react";
-import { useAppSelector } from "../redux/store";
+import Dashboard from "components/dashboard/Dashboard";
 
 const Homepage = () => {
-  const data = useAppSelector((state) => state.project.value);
-  console.log(data);
-  return <div className=""> Homepage</div>;
+  return <Dashboard />;
 };
 
 export default Homepage;
