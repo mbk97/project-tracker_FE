@@ -26,7 +26,7 @@ const Layout = ({ children }: any) => {
         </div>
         <div className="md:flex-[80%]  flex-[100%]  h-[100vh]">
           <Navbar handleOpenMenu={handleOpenMenu} />
-          <div className="ml-[40px] mt-[30px]">
+          <div className="mx-[20px] md:mx-[40px] mt-[30px]">
             <Outlet />
           </div>
         </div>
