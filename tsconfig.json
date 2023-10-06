@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+     "baseUrl": "src",
     "lib": [
       "dom",
       "dom.iterable",
@@ -25,13 +26,5 @@
     "src",
     "custom.d.ts"
   ],
-  "baseUrl": "src",
-    "paths": {
-       "@assets/*": ["src/assets/*"],
-       "@components/*": ["src/components/*"],
-       "@services/*": ["src/services/*"],
-      "@/*": [
-        "*"
-      ]
-    }
+ 
 }

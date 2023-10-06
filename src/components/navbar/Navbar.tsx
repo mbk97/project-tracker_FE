@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import CustomInput from "../input/CustomInput";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { BiBell } from "react-icons/bi";
 import user from "../../assets/images/user.png";
+import CustomSearch from "components/input/CustomSearch";
 interface IProps {
   handleOpenMenu: () => void;
 }
@@ -21,7 +21,7 @@ const Navbar = ({ handleOpenMenu }: IProps) => {
           className="text-[1.5rem] cursor-pointer lg:hidden block"
           onClick={handleOpenMenu}
         />
-        <CustomInput
+        <CustomSearch
           name="search"
           placeholder="Search Project"
           handleChange={handleChange}
