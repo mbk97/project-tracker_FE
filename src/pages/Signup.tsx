@@ -1,12 +1,10 @@
-import React from "react";
-import background from "../assets/images/auth-img.jpg";
 import { Form } from "antd";
+import background from "../assets/images/auth-img.jpg";
 import CustomButton from "components/button/CustomButton";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const handleSubmit = () => {};
-
   return (
     <div className="flex">
       <div
@@ -19,17 +17,33 @@ const Login = () => {
         }}
         className="hidden lg:block md:w-[70%] w-[0]"
       ></div>
-      <div className="flex justify-center md:w-[30%] w-[100%] items-center flex-col md:px-9 px-4">
+      <div
+        className="flex justify-center md:w-[30%] w-[100%] items-center flex-col 
+      md:px-9 px-4"
+      >
         <div className="md:mb-[10px] mt-16">
           <h1 className="text-center text-[1.5rem] font-semibold">
-            Welcome back
+            Get started
           </h1>
-          <p className="text-center w-[320px] mt-4">
+          {/* <p className="text-center w-[320px] mt-4">
             Enter your Credentials to access your account
-          </p>
+          </p> */}
         </div>
         <div>
           <Form onFinish={handleSubmit}>
+            <div className="mb-2 md:w-[330px] w-[100%]">
+              <p className="mb-1">Full name</p>
+              <Form.Item
+                name={"full_name"}
+                rules={[{ required: true, message: "Full name is required" }]}
+              >
+                <input
+                  disabled={false}
+                  className="form-field__input"
+                  placeholder="Full name"
+                />
+              </Form.Item>
+            </div>
             <div className="mb-2 mt-2 md:w-[330px] w-[100%]">
               <p className="mb-1">Email</p>
               <Form.Item
@@ -58,21 +72,36 @@ const Login = () => {
                 />
               </Form.Item>
             </div>
+            <div className="mb-2 mt-2 md:w-[330px] w-[100%]">
+              <p className="mb-1">Confirm password</p>
+              <Form.Item
+                name={"password"}
+                rules={[
+                  { required: true, message: "Confirm password is required" },
+                ]}
+              >
+                <input
+                  disabled={false}
+                  className="form-field__input"
+                  placeholder="Confirm password"
+                  type="password"
+                />
+              </Form.Item>
+            </div>
             <div className="grid place-items-center mt-[50px]">
               <CustomButton
                 styles={{
                   width: "100%",
                 }}
-                text={"Login"}
+                text={"Sign up"}
               />
             </div>
           </Form>
-
           <div className="grid place-items-center mt-9">
             <p>
-              Don't have an account?{" "}
-              <Link to={"/signup"} className="text-[#4040f7]">
-                sign up
+              Already have an account?{" "}
+              <Link to={"/"} className="text-[#4040f7]">
+                login
               </Link>
             </p>
           </div>
@@ -82,4 +111,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
