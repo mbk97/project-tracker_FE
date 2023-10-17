@@ -1,4 +1,3 @@
-import { CustomInput } from "components/input/CustomInput";
 import { PageTitle } from "components/text/Text";
 import React, { useState } from "react";
 import AddTaskStepOne from "./AddTaskStepOne";
@@ -17,7 +16,7 @@ const AddTask = () => {
 
   const handleCloseTaskModal = () => dispatch(closeAddTaskModal());
   return (
-    <div className="w-[400px] p-5">
+    <div className="">
       <div className="flex items-center justify-between">
         <PageTitle text="Add task" />
         <IconButton onClick={handleCloseTaskModal}>
