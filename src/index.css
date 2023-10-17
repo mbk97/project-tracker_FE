@@ -14,3 +14,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.form-field__input {
+  width: 100%;
+  border: 1px solid black;
+  height: 40px;
+  border-radius: 7px;
+  padding: 0 6px;
+  outline: 0;
+}

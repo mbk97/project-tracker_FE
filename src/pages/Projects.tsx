@@ -12,6 +12,7 @@ import AddProjects from "components/addProject/AddProjects";
 import AddTask from "components/addTask/AddTask";
 import CustomButton from "components/button/CustomButton";
 import CustomModal from "components/customModal/CustomModal";
+import LeftModal from "components/customModal/LeftModal";
 import ProgressBar from "components/progressBar/ProgressBar";
 import ProjectDetails from "components/projectDetails/ProjectDetails";
 import { PageTitle } from "components/text/Text";
@@ -23,7 +24,6 @@ import {
   closeAddTaskModal,
   closeProjectDetailsModal,
   toggleAddProjectModal,
-  toggleAddTaskModal,
   toggleProjectDetailsModal,
 } from "redux/slices/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/store";
@@ -148,17 +148,9 @@ const Projects = () => {
         <AddProjects />
       </CustomModal>
 
-      <Drawer
-        open={taskModalState}
-        onClose={handleCloseTaskModal}
-        anchor="right"
-        sx={{
-          zIndex: 10,
-        }}
-        // dialogTitle={"Add new task"}
-      >
+      <LeftModal open={taskModalState} handleClose={handleCloseTaskModal}>
         <AddTask />
-      </Drawer>
+      </LeftModal>
     </div>
   );
 };
