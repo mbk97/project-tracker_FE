@@ -2,6 +2,7 @@ import { Form } from "antd";
 import background from "../assets/images/auth-img.jpg";
 import CustomButton from "components/button/CustomButton";
 import { Link } from "react-router-dom";
+import logo from "../assets/svg/logo.svg";
 
 const Signup = () => {
   const handleSubmit = () => {};
@@ -17,11 +18,16 @@ const Signup = () => {
         }}
         className="hidden lg:block md:w-[70%] w-[0]"
       ></div>
+
       <div
         className="flex justify-center md:w-[30%] w-[100%] items-center flex-col 
       md:px-9 px-4"
       >
-        <div className="md:mb-[10px] mt-16">
+        <div className="md:mb-[10px] ">
+          <div className="flex gap-3 mb-6">
+            <img src={logo} alt="logo" className="h-7 w-7" />
+            <h2 className="font-semibold text-[#000000]">TASK MANAGER</h2>
+          </div>
           <h1 className="text-center text-[1.5rem] font-semibold">
             Get started
           </h1>
