@@ -7,7 +7,11 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useAppDispatch } from "redux/store";
 import { closeAddTaskModal } from "redux/slices/modalSlice";
 
-const AddTask = () => {
+interface IProps {
+  isNewTask?: boolean;
+}
+
+const AddTask = ({ isNewTask }: IProps) => {
   const dispatch = useAppDispatch();
   const [step, setStep] = useState(1);
 
@@ -24,7 +28,7 @@ const AddTask = () => {
         </IconButton>
       </div>
       {step === 1 ? (
-        <AddTaskStepOne handleNextStep={handleNextStep} />
+        <AddTaskStepOne handleNextStep={handleNextStep} isNewTask={isNewTask} />
       ) : (
         <AddTaskStepTwo handlePrevStep={handlePrevStep} />
       )}

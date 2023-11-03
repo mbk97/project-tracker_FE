@@ -5,17 +5,27 @@ import { CiCalendarDate } from "react-icons/ci";
 import { MdUpdate } from "react-icons/md";
 import CustomButton from "components/button/CustomButton";
 import { VscDiffAdded } from "react-icons/vsc";
-import { useAppDispatch } from "redux/store";
+import { useAppDispatch, useAppSelector } from "redux/store";
 import {
+  closeEditProjectModal,
   closeProjectDetailsModal,
   toggleAddTaskModal,
+  toggleEditProjectModal,
 } from "redux/slices/modalSlice";
+import CustomModal from "components/customModal/CustomModal";
+import EditProject from "components/project/EditProject";
 
 const ProjectDetails = () => {
   const data = [1, 2, 3, 4, 5];
   const dispatch = useAppDispatch();
+
   const handleOpenTaskModal = () => {
     dispatch(toggleAddTaskModal());
+    dispatch(closeProjectDetailsModal());
+  };
+
+  const handleOpenEditProjectModal = () => {
+    dispatch(toggleEditProjectModal());
     dispatch(closeProjectDetailsModal());
   };
 
@@ -76,8 +86,12 @@ const ProjectDetails = () => {
             );
           })}
         </ul>
-        <div className="grid place-items-center">
+        <div className="flex justify-center items-center gap-5">
           <CustomButton text="Add Task +" handleClick={handleOpenTaskModal} />
+          <CustomButton
+            text="Edit Project"
+            handleClick={handleOpenEditProjectModal}
+          />
         </div>
       </div>
     </div>
