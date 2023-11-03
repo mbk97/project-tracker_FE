@@ -6,15 +6,15 @@ import {
   TableRow,
   TableCell,
   Paper,
-  Drawer,
 } from "@mui/material";
-import AddProjects from "components/addProject/AddProjects";
-import AddTask from "components/addTask/AddTask";
+import AddProjects from "components/project/AddProjects";
+import AddTask from "components/tasks/addTask/AddTask";
 import CustomButton from "components/button/CustomButton";
 import CustomModal from "components/customModal/CustomModal";
 import LeftModal from "components/customModal/LeftModal";
+import EditProject from "components/project/EditProject";
 import ProgressBar from "components/progressBar/ProgressBar";
-import ProjectDetails from "components/projectDetails/ProjectDetails";
+import ProjectDetails from "components/project/ProjectDetails";
 import { PageTitle } from "components/text/Text";
 import { useState } from "react";
 import { AiFillEye } from "react-icons/ai";
@@ -22,19 +22,31 @@ import { MdDelete } from "react-icons/md";
 import {
   closeAddProjectModal,
   closeAddTaskModal,
+  closeDeleteProjectModal,
+  closeEditProjectModal,
   closeProjectDetailsModal,
   toggleAddProjectModal,
+  toggleDeleteProjectModal,
   toggleProjectDetailsModal,
 } from "redux/slices/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { bodyData, headerData } from "utils/data/tableData";
+import DeleteProject from "components/project/DeleteProject";
 
 const Projects = () => {
   const dispatch = useAppDispatch();
   const [projectTitle, setProjectTitle] = useState<string>("");
+  const [projectId, setProjectId] = useState<string>("");
   const taskModalState = useAppSelector((state) => state.modals.addTaskModal);
   const addProjectModalState = useAppSelector(
     (state) => state.modals.addProjectModal,
+  );
+
+  const editProjectModalState = useAppSelector(
+    (state) => state.modals.editProjectModal,
+  );
+  const deleteProjectModalState = useAppSelector(
+    (state) => state.modals.deleteProjectModal,
   );
   const projectDetailsModalState = useAppSelector(
     (state) => state.modals.projectDetailsModal,
@@ -48,16 +60,23 @@ const Projects = () => {
     dispatch(closeProjectDetailsModal());
   };
 
-  const handleCloseAddTaskModal = () => {
+  const handleCloseAddProjectModal = () => {
     dispatch(closeAddProjectModal());
   };
 
-  // const handleOpenTaskModal = () => {
-  //   dispatch(toggleAddTaskModal());
-  // };
-
   const handleCloseTaskModal = () => {
     dispatch(closeAddTaskModal());
+  };
+
+  const handleCloseEditProjectModal = () => {
+    dispatch(closeEditProjectModal());
+  };
+
+  const handleDeleteProjectModal = () => {
+    dispatch(toggleDeleteProjectModal());
+  };
+  const handleCloseDeleteProjectModal = () => {
+    dispatch(closeDeleteProjectModal());
   };
 
   return (
@@ -123,7 +142,12 @@ const Projects = () => {
                         />
                       </>
                       <>
-                        <MdDelete size={25} />
+                        <MdDelete
+                          size={25}
+                          onClick={() => {
+                            handleDeleteProjectModal();
+                          }}
+                        />
                       </>
                     </TableCell>
                   </TableRow>
@@ -142,10 +166,26 @@ const Projects = () => {
       </CustomModal>
       <CustomModal
         open={addProjectModalState}
-        handleClose={handleCloseAddTaskModal}
+        handleClose={handleCloseAddProjectModal}
         dialogTitle={"Add new project"}
       >
         <AddProjects />
+      </CustomModal>
+
+      <CustomModal
+        open={editProjectModalState}
+        handleClose={handleCloseEditProjectModal}
+        dialogTitle={"Edit project"}
+      >
+        <EditProject />
+      </CustomModal>
+
+      <CustomModal
+        open={deleteProjectModalState}
+        handleClose={handleCloseDeleteProjectModal}
+        dialogTitle={"Delete project"}
+      >
+        <DeleteProject />
       </CustomModal>
 
       <LeftModal open={taskModalState} handleClose={handleCloseTaskModal}>

@@ -1,20 +1,8 @@
-import React, { useState } from "react";
-import CustomButton from "components/button/CustomButton";
 import { Form } from "antd";
+import CustomButton from "components/button/CustomButton";
 
-interface IProps {
-  handleNextStep: () => void;
-}
-
-const AddTaskStepOne = ({ handleNextStep }: IProps) => {
-  const [error, setError] = useState(false);
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    if (!values) {
-      setError(true);
-    }
-  };
-
+const EditProject = () => {
+  const handleSubmit = () => {};
   return (
     <div>
       <Form onFinish={handleSubmit}>
@@ -28,19 +16,6 @@ const AddTaskStepOne = ({ handleNextStep }: IProps) => {
               disabled={false}
               className="form-field__input"
               placeholder="Enter project name"
-            />
-          </Form.Item>
-        </div>
-        <div className="mb-10 mt-9">
-          <p className="mb-1">Task name</p>
-          <Form.Item
-            name={"task_name"}
-            rules={[{ required: true, message: "Task name is required" }]}
-          >
-            <input
-              disabled={false}
-              className="form-field__input"
-              placeholder="Enter task name"
             />
           </Form.Item>
         </div>
@@ -63,7 +38,7 @@ const AddTaskStepOne = ({ handleNextStep }: IProps) => {
           </Form.Item>
         </div>
         <div className="mb-12">
-          <p className="mb-1">Task status</p>
+          <p className="mb-1">Project status</p>
           <Form.Item
             name={"status"}
             rules={[{ required: true, message: "Required" }]}
@@ -74,7 +49,7 @@ const AddTaskStepOne = ({ handleNextStep }: IProps) => {
         </div>
 
         <div className="mb-12">
-          <p className="mb-1">Task description</p>
+          <p className="mb-1">Project description</p>
           <Form.Item
             name={"project_description"}
             rules={[
@@ -86,19 +61,17 @@ const AddTaskStepOne = ({ handleNextStep }: IProps) => {
         </div>
 
         <div className="grid place-items-center">
-          {error ? null : (
-            <CustomButton
-              styles={{
-                width: "100%",
-              }}
-              text={"Proceed"}
-              handleClick={handleNextStep}
-            />
-          )}
+          <CustomButton
+            styles={{
+              width: "100%",
+            }}
+            text={"Edit Project"}
+            // handleClick={handleNextStep}
+          />
         </div>
       </Form>
     </div>
   );
 };
 
-export default AddTaskStepOne;
+export default EditProject;

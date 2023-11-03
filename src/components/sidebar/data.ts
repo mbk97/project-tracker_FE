@@ -6,7 +6,7 @@ export const navItems = [
   {
     id: 1,
     text: "Home",
-    link: "/dashboard",
+    link: "/dashboard/home",
     Icon: ImHome,
   },
   {

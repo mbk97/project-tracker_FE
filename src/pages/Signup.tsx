@@ -31,9 +31,6 @@ const Signup = () => {
           <h1 className="text-center text-[1.5rem] font-semibold">
             Get started
           </h1>
-          {/* <p className="text-center w-[320px] mt-4">
-            Enter your Credentials to access your account
-          </p> */}
         </div>
         <div>
           <Form onFinish={handleSubmit}>
