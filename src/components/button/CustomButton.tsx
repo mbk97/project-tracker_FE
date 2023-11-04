@@ -9,7 +9,7 @@ interface IProps {
 const CustomButton = ({ styles, text, handleClick }: IProps) => {
   return (
     <button
-      className="h-[40px] px-4 rounded-[10px] bg-[#2a85ff] text-[#ffffff]"
+      className="h-[40px] px-4 rounded-[10px] whitespace-nowrap bg-[#2a85ff] text-[#ffffff]"
       style={{
         ...styles,
       }}

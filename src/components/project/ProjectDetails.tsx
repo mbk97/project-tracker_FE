@@ -5,17 +5,18 @@ import { CiCalendarDate } from "react-icons/ci";
 import { MdUpdate } from "react-icons/md";
 import CustomButton from "components/button/CustomButton";
 import { VscDiffAdded } from "react-icons/vsc";
-import { useAppDispatch, useAppSelector } from "redux/store";
+import { useAppDispatch } from "redux/store";
 import {
-  closeEditProjectModal,
   closeProjectDetailsModal,
   toggleAddTaskModal,
   toggleEditProjectModal,
 } from "redux/slices/modalSlice";
-import CustomModal from "components/customModal/CustomModal";
-import EditProject from "components/project/EditProject";
 
-const ProjectDetails = () => {
+interface IProps {
+  handleDeleteProjectModal: () => void;
+}
+
+const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
   const data = [1, 2, 3, 4, 5];
   const dispatch = useAppDispatch();
 
@@ -91,6 +92,13 @@ const ProjectDetails = () => {
           <CustomButton
             text="Edit Project"
             handleClick={handleOpenEditProjectModal}
+          />
+          <CustomButton
+            text="Delete Project"
+            styles={{
+              backgroundColor: "red",
+            }}
+            handleClick={handleDeleteProjectModal}
           />
         </div>
       </div>

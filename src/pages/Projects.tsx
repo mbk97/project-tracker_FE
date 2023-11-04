@@ -1,12 +1,3 @@
-import {
-  TableContainer,
-  TableHead,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
-} from "@mui/material";
 import AddProjects from "components/project/AddProjects";
 import AddTask from "components/tasks/addTask/AddTask";
 import CustomButton from "components/button/CustomButton";
@@ -18,7 +9,6 @@ import ProjectDetails from "components/project/ProjectDetails";
 import { PageTitle } from "components/text/Text";
 import { useState } from "react";
 import { AiFillEye } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import {
   closeAddProjectModal,
   closeAddTaskModal,
@@ -36,7 +26,7 @@ import DeleteProject from "components/project/DeleteProject";
 const Projects = () => {
   const dispatch = useAppDispatch();
   const [projectTitle, setProjectTitle] = useState<string>("");
-  const [projectId, setProjectId] = useState<string>("");
+  // const [projectId, setProjectId] = useState<string>("");
   const taskModalState = useAppSelector((state) => state.modals.addTaskModal);
   const addProjectModalState = useAppSelector(
     (state) => state.modals.addProjectModal,
@@ -74,6 +64,7 @@ const Projects = () => {
 
   const handleDeleteProjectModal = () => {
     dispatch(toggleDeleteProjectModal());
+    dispatch(closeProjectDetailsModal());
   };
   const handleCloseDeleteProjectModal = () => {
     dispatch(closeDeleteProjectModal());
@@ -91,78 +82,63 @@ const Projects = () => {
         />
       </div>
       <div>
-        <TableContainer
-          component={Paper}
-          className="w-[900px] overflow-x-scroll mt-11"
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
+        {/* md:w-[100%] */}
+        <div className=" bg-[#ffffff] w-[400px] md:w-[100%] overflow-x-auto mt-11 rounded-[8px]">
+          <table className="w-[100%] h-[300px]">
+            <thead>
+              <tr>
                 {headerData.map((item) => {
                   return (
-                    <>
-                      <TableCell
-                        style={{
-                          fontWeight: 600,
-                          fontSize: "18px",
-                        }}
-                        key={item.id}
-                      >
-                        {item?.text}
-                      </TableCell>
-                    </>
+                    <th
+                      style={{
+                        fontWeight: 600,
+                        borderBottom: "1px solid #e6e6e6",
+                        fontSize: "18px",
+                        padding: "20px 7px",
+                        whiteSpace: "nowrap",
+                      }}
+                      className=" text-left "
+                      key={item.id}
+                    >
+                      {item?.text}
+                    </th>
                   );
                 })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
+              </tr>
+            </thead>
+            <tbody>
               {bodyData.map((item) => {
                 return (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>{item.startDate}</TableCell>
-                    <TableCell>{item.endDate}</TableCell>
-                    <TableCell>
+                  <tr key={item.id} className="data-row">
+                    <td className=" whitespace-nowrap">{item.name}</td>
+                    <td className=" whitespace-nowrap">{item.status}</td>
+                    <td className=" whitespace-nowrap">{item.startDate}</td>
+                    <td className=" whitespace-nowrap">{item.endDate}</td>
+                    <td className=" whitespace-nowrap">
                       <ProgressBar progress={item.Progress} />
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <>
-                        <AiFillEye
-                          size={25}
-                          onClick={() => {
-                            handleOpenProjectDetails(item.name);
-                          }}
-                        />
-                      </>
-                      <>
-                        <MdDelete
-                          size={25}
-                          onClick={() => {
-                            handleDeleteProjectModal();
-                          }}
-                        />
-                      </>
-                    </TableCell>
-                  </TableRow>
+                    </td>
+
+                    <td>
+                      <CustomButton
+                        text={"View more"}
+                        handleClick={() => {
+                          handleOpenProjectDetails(item.name);
+                        }}
+                      />
+                    </td>
+                  </tr>
                 );
               })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </tbody>
+          </table>
+        </div>
       </div>
       <CustomModal
         open={projectDetailsModalState}
         handleClose={handleCloseProjectDetails}
         dialogTitle={projectTitle}
       >
-        <ProjectDetails />
+        <ProjectDetails handleDeleteProjectModal={handleDeleteProjectModal} />
       </CustomModal>
       <CustomModal
         open={addProjectModalState}

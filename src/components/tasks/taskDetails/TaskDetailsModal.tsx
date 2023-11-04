@@ -4,7 +4,6 @@ import React from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { MdUpdate } from "react-icons/md";
-import { VscDiffAdded } from "react-icons/vsc";
 
 const TaskDetailsModal = () => {
   return (
@@ -64,7 +63,12 @@ const TaskDetailsModal = () => {
             text="Edit Task"
             // handleClick={handleOpenEditProjectModal}
           />
-          <CustomButton text="Delete Task " />
+          <CustomButton
+            text="Delete Task"
+            styles={{
+              background: "red",
+            }}
+          />
         </div>
       </div>
     </div>
