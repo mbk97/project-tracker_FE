@@ -1,12 +1,17 @@
 import React from "react";
 import background from "../assets/images/auth-img.jpg";
-import { Form } from "antd";
+import { Form, Input } from "antd";
 import CustomButton from "components/button/CustomButton";
 import { Link } from "react-router-dom";
 import logo from "../assets/svg/logo.svg";
+import { useLoginRequest } from "services/queries/auth";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 const Login = () => {
-  const handleSubmit = () => {};
+  const { mutate, isLoading } = useLoginRequest();
+  const handleSubmit = async (values: any) => {
+    mutate(values);
+  };
 
   return (
     <div className="flex">
@@ -38,7 +43,7 @@ const Login = () => {
                 name={"email"}
                 rules={[{ required: true, message: "Email is required" }]}
               >
-                <input
+                <Input
                   disabled={false}
                   className="form-field__input"
                   placeholder="Email"
@@ -52,11 +57,17 @@ const Login = () => {
                 name={"password"}
                 rules={[{ required: true, message: "Password is required" }]}
               >
-                <input
-                  disabled={false}
-                  className="form-field__input"
+                <Input.Password
+                  className="form-field__input w-[800px]"
                   placeholder="Password"
                   type="password"
+                  iconRender={(visible) =>
+                    visible ? (
+                      <BsEye className="cursor-pointer" />
+                    ) : (
+                      <BsEyeSlash className="cursor-pointer" />
+                    )
+                  }
                 />
               </Form.Item>
             </div>
@@ -66,6 +77,7 @@ const Login = () => {
                   width: "100%",
                 }}
                 text={"Login"}
+                loading={isLoading}
               />
             </div>
           </Form>

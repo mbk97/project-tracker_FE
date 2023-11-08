@@ -1,11 +1,24 @@
-import { Form } from "antd";
+import { Form, Input } from "antd";
 import background from "../assets/images/auth-img.jpg";
 import CustomButton from "components/button/CustomButton";
 import { Link } from "react-router-dom";
 import logo from "../assets/svg/logo.svg";
+import { useRegisterRequest } from "services/queries/auth";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { useToast } from "hooks/toast";
 
 const Signup = () => {
-  const handleSubmit = () => {};
+  const { mutate, isLoading } = useRegisterRequest();
+  const { toastError } = useToast();
+  const handleSubmit = async (values: any) => {
+    console.log(values.password !== values.confirm_password);
+    if (values.password !== values.confirm_password) {
+      toastError("Passwords do not match");
+      return;
+    } else {
+      mutate(values);
+    }
+  };
   return (
     <div className="flex">
       <div
@@ -35,12 +48,12 @@ const Signup = () => {
         <div>
           <Form onFinish={handleSubmit}>
             <div className="mb-2 md:w-[330px] w-[100%]">
-              <p className="mb-1">Full name</p>
+              <p className="mb-1">Name</p>
               <Form.Item
-                name={"full_name"}
-                rules={[{ required: true, message: "Full name is required" }]}
+                name={"name"}
+                rules={[{ required: true, message: "Name is required" }]}
               >
-                <input
+                <Input
                   disabled={false}
                   className="form-field__input"
                   placeholder="Full name"
@@ -53,7 +66,7 @@ const Signup = () => {
                 name={"email"}
                 rules={[{ required: true, message: "Email is required" }]}
               >
-                <input
+                <Input
                   disabled={false}
                   className="form-field__input"
                   placeholder="Email"
@@ -67,27 +80,37 @@ const Signup = () => {
                 name={"password"}
                 rules={[{ required: true, message: "Password is required" }]}
               >
-                <input
-                  disabled={false}
-                  className="form-field__input"
+                <Input.Password
+                  className="form-field__input w-[800px]"
                   placeholder="Password"
                   type="password"
+                  iconRender={(visible) =>
+                    visible ? (
+                      <BsEye className="cursor-pointer" />
+                    ) : (
+                      <BsEyeSlash className="cursor-pointer" />
+                    )
+                  }
                 />
               </Form.Item>
             </div>
             <div className="mb-2 mt-2 md:w-[330px] w-[100%]">
               <p className="mb-1">Confirm password</p>
               <Form.Item
-                name={"password"}
-                rules={[
-                  { required: true, message: "Confirm password is required" },
-                ]}
+                name={"confirm_password"}
+                rules={[{ required: true, message: "Confirm your password" }]}
               >
-                <input
-                  disabled={false}
-                  className="form-field__input"
-                  placeholder="Confirm password"
+                <Input.Password
+                  className="form-field__input w-[800px]"
+                  placeholder="Password"
                   type="password"
+                  iconRender={(visible) =>
+                    visible ? (
+                      <BsEye className="cursor-pointer" />
+                    ) : (
+                      <BsEyeSlash className="cursor-pointer" />
+                    )
+                  }
                 />
               </Form.Item>
             </div>
@@ -97,6 +120,7 @@ const Signup = () => {
                   width: "100%",
                 }}
                 text={"Sign up"}
+                loading={isLoading}
               />
             </div>
           </Form>

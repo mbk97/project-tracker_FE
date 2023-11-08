@@ -11,12 +11,20 @@ import {
   toggleAddTaskModal,
   toggleEditProjectModal,
 } from "redux/slices/modalSlice";
+import { convertDate } from "utils/date";
+import { useDeleteProject } from "services/queries/project";
 
 interface IProps {
   handleDeleteProjectModal: () => void;
+  projectDetail: any;
+  handleOpenEditProjectModal: (item: any) => void;
 }
 
-const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
+const ProjectDetails = ({
+  handleDeleteProjectModal,
+  handleOpenEditProjectModal,
+  projectDetail,
+}: IProps) => {
   const data = [1, 2, 3, 4, 5];
   const dispatch = useAppDispatch();
 
@@ -25,9 +33,15 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
     dispatch(closeProjectDetailsModal());
   };
 
-  const handleOpenEditProjectModal = () => {
-    dispatch(toggleEditProjectModal());
-    dispatch(closeProjectDetailsModal());
+  // const handleOpenEditProjectModal = () => {
+  //   dispatch(toggleEditProjectModal());
+  //   dispatch(closeProjectDetailsModal());
+  // };
+
+  const { mutate, isLoading } = useDeleteProject();
+
+  const handleDelete = () => {
+    mutate(projectDetail?._id);
   };
 
   return (
@@ -39,7 +53,7 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
           </ListItemIcon>
           <ListItemText className="w-[120px]">Start Date</ListItemText>
           <ListItemText className="text-[#000000] font-semibold ">
-            10-10-2023
+            {convertDate(projectDetail?.startDate)}
           </ListItemText>
         </ListItem>
         <ListItem>
@@ -48,7 +62,7 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
           </ListItemIcon>
           <ListItemText className="w-[120px]">End Date:</ListItemText>
           <ListItemText className="text-[#000000] font-semibold ">
-            20-10-2023
+            {convertDate(projectDetail?.endDate)}
           </ListItemText>
         </ListItem>
         <ListItem>
@@ -57,7 +71,7 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
           </ListItemIcon>
           <ListItemText className="w-[120px]">Status:</ListItemText>
           <ListItemText className="text-[#000000] font-semibold  ">
-            In Progress
+            {projectDetail?.status}
           </ListItemText>
         </ListItem>
       </List>
@@ -67,10 +81,7 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
           <h6 className="text-[20px] font-medium">Description</h6>
         </div>
         <div>
-          <p className="mt-4 w-[90%]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-            deserunt dignissimos obcaecati et quasi. Rem enim cupiditate a iusto
-          </p>
+          <p className="mt-4 w-[90%]">{projectDetail?.projectDescription}</p>
         </div>
 
         <div className="flex gap-2 my-4">
@@ -91,14 +102,16 @@ const ProjectDetails = ({ handleDeleteProjectModal }: IProps) => {
           <CustomButton text="Add Task +" handleClick={handleOpenTaskModal} />
           <CustomButton
             text="Edit Project"
-            handleClick={handleOpenEditProjectModal}
+            handleClick={() => handleOpenEditProjectModal(projectDetail)}
           />
           <CustomButton
             text="Delete Project"
             styles={{
               backgroundColor: "red",
+              width: "135px",
             }}
-            handleClick={handleDeleteProjectModal}
+            handleClick={() => handleDelete()}
+            loading={isLoading}
           />
         </div>
       </div>

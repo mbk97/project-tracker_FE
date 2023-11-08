@@ -1,8 +1,10 @@
 import React from "react";
 import { BigTaskCard, ProjectCard } from "../cards/Cards";
+import { getFromLocalStorage } from "utils/storage";
 
 const Dashboard = () => {
   const data = [1, 2, 3, 4, 5];
+
   return (
     <div className="">
       {/* if there's a project, use the newly added projects, if not use the Project title instead, do this for the tasks below */}

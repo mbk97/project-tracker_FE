@@ -1,8 +1,23 @@
 import { Form } from "antd";
 import CustomButton from "components/button/CustomButton";
+import { useEditProject } from "services/queries/project";
+import { convertDate } from "utils/date";
 
-const EditProject = () => {
-  const handleSubmit = () => {};
+interface IProps {
+  editItem: any;
+}
+
+const EditProject = ({ editItem }: IProps) => {
+  const { mutate, isLoading } = useEditProject();
+  const handleSubmit = (values: any) => {
+    console.log(values);
+    const payload = {
+      ...values,
+      id: editItem?._id,
+    };
+    mutate(payload);
+  };
+
   return (
     <div>
       <Form onFinish={handleSubmit}>
@@ -11,6 +26,7 @@ const EditProject = () => {
           <Form.Item
             name={"project_name"}
             rules={[{ required: true, message: "Project name is required" }]}
+            initialValue={editItem.projectName}
           >
             <input
               disabled={false}
@@ -24,7 +40,14 @@ const EditProject = () => {
           <Form.Item
             name={"start_date"}
             rules={[{ required: true, message: "Start date is required" }]}
+            initialValue={editItem.startDate}
           >
+            {/* <DatePicker
+              onChange={onDateChange}
+              className="form-field__input"
+              format="YYYY-MM-DD"
+              disabledDate={disabledDate}
+            /> */}
             <input disabled={false} className="form-field__input" type="date" />
           </Form.Item>
         </div>
@@ -33,6 +56,7 @@ const EditProject = () => {
           <Form.Item
             name={"end_date"}
             rules={[{ required: true, message: "End date is required" }]}
+            initialValue={editItem.endDate}
           >
             <input disabled={false} className="form-field__input" type="date" />
           </Form.Item>
@@ -44,7 +68,12 @@ const EditProject = () => {
             rules={[{ required: true, message: "Required" }]}
             initialValue="In Progress"
           >
-            <input disabled={true} className="form-field__input" type="text" />
+            <input
+              disabled={true}
+              className="form-field__input"
+              type="text"
+              defaultValue={editItem.status}
+            />
           </Form.Item>
         </div>
 
@@ -55,6 +84,7 @@ const EditProject = () => {
             rules={[
               { required: true, message: "Project description is required" },
             ]}
+            initialValue={editItem.projectDescription}
           >
             <textarea className="h-[150px] rounded-[7px] border border-[#000000] w-[100%] p-2 outline-none resize-none"></textarea>
           </Form.Item>
@@ -66,6 +96,7 @@ const EditProject = () => {
               width: "100%",
             }}
             text={"Edit Project"}
+            loading={isLoading}
             // handleClick={handleNextStep}
           />
         </div>

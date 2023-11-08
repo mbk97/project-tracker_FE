@@ -8,7 +8,6 @@ import ProgressBar from "components/progressBar/ProgressBar";
 import ProjectDetails from "components/project/ProjectDetails";
 import { PageTitle } from "components/text/Text";
 import { useState } from "react";
-import { AiFillEye } from "react-icons/ai";
 import {
   closeAddProjectModal,
   closeAddTaskModal,
@@ -17,16 +16,25 @@ import {
   closeProjectDetailsModal,
   toggleAddProjectModal,
   toggleDeleteProjectModal,
+  toggleEditProjectModal,
   toggleProjectDetailsModal,
 } from "redux/slices/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { bodyData, headerData } from "utils/data/tableData";
 import DeleteProject from "components/project/DeleteProject";
+import { useGetProjects, useSearchProject } from "services/queries/project";
+import moment from "moment";
+import { convertDate } from "utils/date";
+import { IconButton, Skeleton } from "@mui/material";
+import { BiSearch } from "react-icons/bi";
 
 const Projects = () => {
+  const { result, isLoading } = useGetProjects();
+  const { executeSearch, data, isLoading: searchLoading } = useSearchProject();
   const dispatch = useAppDispatch();
-  const [projectTitle, setProjectTitle] = useState<string>("");
-  // const [projectId, setProjectId] = useState<string>("");
+  const [projectDetail, setProjectDetail] = useState<any>("");
+  const [query, setQuery] = useState<any>("");
+  const [editItem, setEditItem] = useState<any>({});
   const taskModalState = useAppSelector((state) => state.modals.addTaskModal);
   const addProjectModalState = useAppSelector(
     (state) => state.modals.addProjectModal,
@@ -42,9 +50,9 @@ const Projects = () => {
     (state) => state.modals.projectDetailsModal,
   );
 
-  const handleOpenProjectDetails = (title: string) => {
+  const handleOpenProjectDetails = (item: any) => {
     dispatch(toggleProjectDetailsModal());
-    setProjectTitle(title);
+    setProjectDetail(item);
   };
   const handleCloseProjectDetails = () => {
     dispatch(closeProjectDetailsModal());
@@ -56,6 +64,12 @@ const Projects = () => {
 
   const handleCloseTaskModal = () => {
     dispatch(closeAddTaskModal());
+  };
+
+  const handleOpenEditProjectModal = (item: any) => {
+    dispatch(toggleEditProjectModal());
+    dispatch(closeProjectDetailsModal());
+    setEditItem(item);
   };
 
   const handleCloseEditProjectModal = () => {
@@ -70,75 +84,125 @@ const Projects = () => {
     dispatch(closeDeleteProjectModal());
   };
 
+  const handleChange = (e: any) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSearch = () => {
+    executeSearch(query);
+  };
+
+  console.log(data);
+
   return (
     <div>
       <div className="flex justify-between items-center ">
         <PageTitle text="Projects" />
-        <CustomButton
-          text="Add project +"
-          handleClick={() => {
-            dispatch(toggleAddProjectModal());
-          }}
-        />
-      </div>
-      <div>
-        {/* md:w-[100%] */}
-        <div className=" bg-[#ffffff] w-[400px] md:w-[100%] overflow-x-auto mt-11 rounded-[8px]">
-          <table className="w-[100%] h-[300px]">
-            <thead>
-              <tr>
-                {headerData.map((item) => {
-                  return (
-                    <th
-                      style={{
-                        fontWeight: 600,
-                        borderBottom: "1px solid #e6e6e6",
-                        fontSize: "18px",
-                        padding: "20px 7px",
-                        whiteSpace: "nowrap",
-                      }}
-                      className=" text-left "
-                      key={item.id}
-                    >
-                      {item?.text}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {bodyData.map((item) => {
-                return (
-                  <tr key={item.id} className="data-row">
-                    <td className=" whitespace-nowrap">{item.name}</td>
-                    <td className=" whitespace-nowrap">{item.status}</td>
-                    <td className=" whitespace-nowrap">{item.startDate}</td>
-                    <td className=" whitespace-nowrap">{item.endDate}</td>
-                    <td className=" whitespace-nowrap">
-                      <ProgressBar progress={item.Progress} />
-                    </td>
-
-                    <td>
-                      <CustomButton
-                        text={"View more"}
-                        handleClick={() => {
-                          handleOpenProjectDetails(item.name);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
+            <input
+              disabled={false}
+              // value={query}
+              name="query"
+              onChange={handleChange}
+              className="form-field__input"
+              placeholder="Search by project name"
+            />
+            <IconButton onClick={() => handleSearch()}>
+              <BiSearch />
+            </IconButton>
+          </div>
+          <CustomButton
+            text="Add project +"
+            handleClick={() => {
+              dispatch(toggleAddProjectModal());
+            }}
+          />
         </div>
       </div>
+      <div className="mt-11">
+        {isLoading && (
+          <Skeleton
+            variant="rectangular"
+            width={"auto"}
+            height={200}
+            animation="wave"
+          />
+        )}
+      </div>
+      {!isLoading && result?.length > 0 ? (
+        <div>
+          {/* md:w-[100%] */}
+          <div className=" bg-[#ffffff] w-[400px] md:w-[100%] overflow-x-auto mt-11 rounded-[8px]">
+            <table className="w-[100%]">
+              <thead>
+                <tr>
+                  {headerData.map((item) => {
+                    return (
+                      <th
+                        style={{
+                          fontWeight: 600,
+                          borderBottom: "1px solid #e6e6e6",
+                          fontSize: "18px",
+                          padding: "20px 7px",
+                          whiteSpace: "nowrap",
+                        }}
+                        className=" text-left "
+                        key={item.id}
+                      >
+                        {item?.text}
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {result?.map((item: any) => {
+                  return (
+                    <tr key={item.id} className="data-row">
+                      <td className=" whitespace-nowrap">{item.projectName}</td>
+                      <td className=" whitespace-nowrap">{item.status}</td>
+                      <td className=" whitespace-nowrap">
+                        {convertDate(item.startDate)}
+                      </td>
+                      <td className=" whitespace-nowrap">
+                        {" "}
+                        {convertDate(item.endDate)}
+                      </td>
+                      <td className=" whitespace-nowrap">
+                        {/* <ProgressBar progress={item.Progress} /> */}
+                      </td>
+
+                      <td>
+                        <CustomButton
+                          text={"View more"}
+                          handleClick={() => {
+                            handleOpenProjectDetails(item);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : null}
+
+      {!isLoading && result?.length === 0 && (
+        <p>You do not have any ongoing project</p>
+      )}
       <CustomModal
         open={projectDetailsModalState}
         handleClose={handleCloseProjectDetails}
-        dialogTitle={projectTitle}
+        dialogTitle={projectDetail?.projectName}
       >
-        <ProjectDetails handleDeleteProjectModal={handleDeleteProjectModal} />
+        <ProjectDetails
+          handleDeleteProjectModal={handleDeleteProjectModal}
+          handleOpenEditProjectModal={handleOpenEditProjectModal}
+          projectDetail={projectDetail}
+        />
       </CustomModal>
       <CustomModal
         open={addProjectModalState}
@@ -153,7 +217,7 @@ const Projects = () => {
         handleClose={handleCloseEditProjectModal}
         dialogTitle={"Edit project"}
       >
-        <EditProject />
+        <EditProject editItem={editItem} />
       </CustomModal>
 
       <CustomModal
