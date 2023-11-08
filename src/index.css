@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f4f4f4;
   font-family: "Roboto Slab", serif;
+  overflow-x: hidden;
 }
 
 code {
@@ -19,7 +20,13 @@ code {
   width: 100%;
   border: 1px solid black;
   height: 40px;
-  border-radius: 7px;
+  /* border-radius: 73px;4 */
   padding: 0 6px;
   outline: 0;
+}
+
+.data-row td {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 10px 7px;
 }

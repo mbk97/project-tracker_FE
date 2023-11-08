@@ -11,16 +11,6 @@ import {
 } from "redux/slices/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { AiFillEye } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import { taskBodyData, taskHeaderData } from "utils/data/tableData";
 import ProgressBar from "components/progressBar/ProgressBar";
 import CustomModal from "components/customModal/CustomModal";
@@ -103,73 +93,55 @@ const Tasks = () => {
           </div>
         </div>
       </div>
-      <div>
-        <TableContainer
-          component={Paper}
-          className="w-[900px] overflow-x-scroll mt-11"
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                {taskHeaderData.map((item) => {
-                  return (
-                    <>
-                      <TableCell
-                        style={{
-                          fontWeight: 600,
-                          fontSize: "18px",
-                        }}
-                        key={item.id}
-                      >
-                        {item?.text}
-                      </TableCell>
-                    </>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {taskBodyData.map((item) => {
+      <div className=" bg-[#ffffff] w-[400px] md:w-[100%] overflow-x-auto mt-11 rounded-[8px]">
+        <table className="w-[100%] h-[300px]">
+          <thead>
+            <tr>
+              {taskHeaderData.map((item) => {
                 return (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.taskName}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>{item.startDate}</TableCell>
-                    <TableCell>{item.endDate}</TableCell>
-                    <TableCell>
-                      <ProgressBar progress={item.Progress} />
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <>
-                        <AiFillEye
-                          size={25}
-                          onClick={() => {
-                            handleOpenTaksDetails(item.name);
-                          }}
-                        />
-                      </>
-                      {/* <>
-                        <MdDelete
-                          size={25}
-                          onClick={() => {
-                            handleDeleteProjectModal();
-                          }}
-                        />
-                      </> */}
-                    </TableCell>
-                  </TableRow>
+                  <th
+                    style={{
+                      fontWeight: 600,
+                      borderBottom: "1px solid #e6e6e6",
+                      fontSize: "18px",
+                      padding: "20px 7px",
+                      whiteSpace: "nowrap",
+                    }}
+                    className=" text-left "
+                    key={item.id}
+                  >
+                    {item?.text}
+                  </th>
                 );
               })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </tr>
+          </thead>
+          <tbody>
+            {taskBodyData.map((item) => {
+              return (
+                <tr key={item.id} className="data-row">
+                  <td className="whitespace-nowrap">{item.taskName}</td>
+                  <td className="whitespace-nowrap">{item.name}</td>
+                  <td className="whitespace-nowrap">{item.status}</td>
+                  <td className="whitespace-nowrap">{item.startDate}</td>
+                  <td className="whitespace-nowrap">{item.endDate}</td>
+                  <td className="whitespace-nowrap">
+                    <ProgressBar progress={item.Progress} />
+                  </td>
+
+                  <td>
+                    <CustomButton
+                      text={"View more"}
+                      handleClick={() => {
+                        handleOpenTaksDetails(item.name);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
       <LeftModal open={taskModalState} handleClose={handleCloseTaskModal}>
         <AddTask isNewTask={isNewTask} />

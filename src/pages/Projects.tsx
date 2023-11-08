@@ -1,12 +1,3 @@
-import {
-  TableContainer,
-  TableHead,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
-} from "@mui/material";
 import AddProjects from "components/project/AddProjects";
 import AddTask from "components/tasks/addTask/AddTask";
 import CustomButton from "components/button/CustomButton";
@@ -17,8 +8,6 @@ import ProgressBar from "components/progressBar/ProgressBar";
 import ProjectDetails from "components/project/ProjectDetails";
 import { PageTitle } from "components/text/Text";
 import { useState } from "react";
-import { AiFillEye } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import {
   closeAddProjectModal,
   closeAddTaskModal,
@@ -27,16 +16,25 @@ import {
   closeProjectDetailsModal,
   toggleAddProjectModal,
   toggleDeleteProjectModal,
+  toggleEditProjectModal,
   toggleProjectDetailsModal,
 } from "redux/slices/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { bodyData, headerData } from "utils/data/tableData";
 import DeleteProject from "components/project/DeleteProject";
+import { useGetProjects, useSearchProject } from "services/queries/project";
+import moment from "moment";
+import { convertDate } from "utils/date";
+import { IconButton, Skeleton } from "@mui/material";
+import { BiSearch } from "react-icons/bi";
 
 const Projects = () => {
+  const { result, isLoading } = useGetProjects();
+  const { executeSearch, data, isLoading: searchLoading } = useSearchProject();
   const dispatch = useAppDispatch();
-  const [projectTitle, setProjectTitle] = useState<string>("");
-  const [projectId, setProjectId] = useState<string>("");
+  const [projectDetail, setProjectDetail] = useState<any>("");
+  const [query, setQuery] = useState<any>("");
+  const [editItem, setEditItem] = useState<any>({});
   const taskModalState = useAppSelector((state) => state.modals.addTaskModal);
   const addProjectModalState = useAppSelector(
     (state) => state.modals.addProjectModal,
@@ -52,9 +50,9 @@ const Projects = () => {
     (state) => state.modals.projectDetailsModal,
   );
 
-  const handleOpenProjectDetails = (title: string) => {
+  const handleOpenProjectDetails = (item: any) => {
     dispatch(toggleProjectDetailsModal());
-    setProjectTitle(title);
+    setProjectDetail(item);
   };
   const handleCloseProjectDetails = () => {
     dispatch(closeProjectDetailsModal());
@@ -68,101 +66,143 @@ const Projects = () => {
     dispatch(closeAddTaskModal());
   };
 
+  const handleOpenEditProjectModal = (item: any) => {
+    dispatch(toggleEditProjectModal());
+    dispatch(closeProjectDetailsModal());
+    setEditItem(item);
+  };
+
   const handleCloseEditProjectModal = () => {
     dispatch(closeEditProjectModal());
   };
 
   const handleDeleteProjectModal = () => {
     dispatch(toggleDeleteProjectModal());
+    dispatch(closeProjectDetailsModal());
   };
   const handleCloseDeleteProjectModal = () => {
     dispatch(closeDeleteProjectModal());
   };
 
+  const handleChange = (e: any) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSearch = () => {
+    executeSearch(query);
+  };
+
+  console.log(data);
+
   return (
     <div>
       <div className="flex justify-between items-center ">
         <PageTitle text="Projects" />
-        <CustomButton
-          text="Add project +"
-          handleClick={() => {
-            dispatch(toggleAddProjectModal());
-          }}
-        />
+        <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
+            <input
+              disabled={false}
+              // value={query}
+              name="query"
+              onChange={handleChange}
+              className="form-field__input"
+              placeholder="Search by project name"
+            />
+            <IconButton onClick={() => handleSearch()}>
+              <BiSearch />
+            </IconButton>
+          </div>
+          <CustomButton
+            text="Add project +"
+            handleClick={() => {
+              dispatch(toggleAddProjectModal());
+            }}
+          />
+        </div>
       </div>
-      <div>
-        <TableContainer
-          component={Paper}
-          className="w-[900px] overflow-x-scroll mt-11"
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                {headerData.map((item) => {
-                  return (
-                    <>
-                      <TableCell
+      <div className="mt-11">
+        {isLoading && (
+          <Skeleton
+            variant="rectangular"
+            width={"auto"}
+            height={200}
+            animation="wave"
+          />
+        )}
+      </div>
+      {!isLoading && result?.length > 0 ? (
+        <div>
+          {/* md:w-[100%] */}
+          <div className=" bg-[#ffffff] w-[400px] md:w-[100%] overflow-x-auto mt-11 rounded-[8px]">
+            <table className="w-[100%]">
+              <thead>
+                <tr>
+                  {headerData.map((item) => {
+                    return (
+                      <th
                         style={{
                           fontWeight: 600,
+                          borderBottom: "1px solid #e6e6e6",
                           fontSize: "18px",
+                          padding: "20px 7px",
+                          whiteSpace: "nowrap",
                         }}
+                        className=" text-left "
                         key={item.id}
                       >
                         {item?.text}
-                      </TableCell>
-                    </>
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {result?.map((item: any) => {
+                  return (
+                    <tr key={item.id} className="data-row">
+                      <td className=" whitespace-nowrap">{item.projectName}</td>
+                      <td className=" whitespace-nowrap">{item.status}</td>
+                      <td className=" whitespace-nowrap">
+                        {convertDate(item.startDate)}
+                      </td>
+                      <td className=" whitespace-nowrap">
+                        {" "}
+                        {convertDate(item.endDate)}
+                      </td>
+                      <td className=" whitespace-nowrap">
+                        {/* <ProgressBar progress={item.Progress} /> */}
+                      </td>
+
+                      <td>
+                        <CustomButton
+                          text={"View more"}
+                          handleClick={() => {
+                            handleOpenProjectDetails(item);
+                          }}
+                        />
+                      </td>
+                    </tr>
                   );
                 })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {bodyData.map((item) => {
-                return (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>{item.startDate}</TableCell>
-                    <TableCell>{item.endDate}</TableCell>
-                    <TableCell>
-                      <ProgressBar progress={item.Progress} />
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <>
-                        <AiFillEye
-                          size={25}
-                          onClick={() => {
-                            handleOpenProjectDetails(item.name);
-                          }}
-                        />
-                      </>
-                      <>
-                        <MdDelete
-                          size={25}
-                          onClick={() => {
-                            handleDeleteProjectModal();
-                          }}
-                        />
-                      </>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : null}
+
+      {!isLoading && result?.length === 0 && (
+        <p>You do not have any ongoing project</p>
+      )}
       <CustomModal
         open={projectDetailsModalState}
         handleClose={handleCloseProjectDetails}
-        dialogTitle={projectTitle}
+        dialogTitle={projectDetail?.projectName}
       >
-        <ProjectDetails />
+        <ProjectDetails
+          handleDeleteProjectModal={handleDeleteProjectModal}
+          handleOpenEditProjectModal={handleOpenEditProjectModal}
+          projectDetail={projectDetail}
+        />
       </CustomModal>
       <CustomModal
         open={addProjectModalState}
@@ -177,7 +217,7 @@ const Projects = () => {
         handleClose={handleCloseEditProjectModal}
         dialogTitle={"Edit project"}
       >
-        <EditProject />
+        <EditProject editItem={editItem} />
       </CustomModal>
 
       <CustomModal

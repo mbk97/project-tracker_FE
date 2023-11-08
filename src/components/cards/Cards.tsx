@@ -9,7 +9,7 @@ interface ICardProps {
 
 const ProjectCard = ({ title }: ICardProps) => {
   return (
-    <div className="bg-[#ffffff] flex gap-4 md:gap-5 mt-10 p-4 h-[200px] w-[90%] md:w-[250px] rounded-[10px]">
+    <div className="bg-[#ffffff] flex gap-4 md:gap-5 mt-10 p-4 h-[200px] w-[100%] md:w-[250px] rounded-[10px]">
       <div className="flex gap-2">
         <div className={`h-[25px] w-[15px] rounded-[4px] `}>
           <BsFillBuildingsFill />
@@ -40,7 +40,7 @@ const ProjectCard = ({ title }: ICardProps) => {
 
 const BigTaskCard = ({ title }: ICardProps) => {
   return (
-    <div className="bg-[#ffffff] mt-10 h-[70px] flex justify-between w-[90%] p-4 lg:w-[500px] rounded-[10px]">
+    <div className="bg-[#ffffff] mt-10 h-[70px] flex justify-between w-[100%] p-4 lg:w-[500px] rounded-[10px]">
       <div className="flex items-center gap-10">
         <div className="flex gap-3 items-center">
           <FaTasks />

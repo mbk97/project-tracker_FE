@@ -1,11 +1,16 @@
 import CustomButton from "components/button/CustomButton";
-import { Form } from "antd";
-import React from "react";
+import { DatePicker, Form } from "antd";
+import React, { useState } from "react";
+import { useCreateProjects } from "services/queries/project";
 
 const AddProjects = () => {
+  const { mutate, isLoading } = useCreateProjects();
+
   const handleSubmit = (values: any) => {
     console.log(values);
+    mutate(values);
   };
+
   return (
     <div>
       <Form onFinish={handleSubmit}>
@@ -69,7 +74,7 @@ const AddProjects = () => {
               width: "100%",
             }}
             text={"Create Project"}
-            // handleClick={handleNextStep}
+            loading={isLoading}
           />
         </div>
       </Form>
