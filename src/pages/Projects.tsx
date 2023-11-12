@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import AddProjects from "components/project/AddProjects";
 import AddTask from "components/tasks/addTask/AddTask";
 import CustomButton from "components/button/CustomButton";
@@ -7,7 +8,6 @@ import EditProject from "components/project/EditProject";
 import ProgressBar from "components/progressBar/ProgressBar";
 import ProjectDetails from "components/project/ProjectDetails";
 import { PageTitle } from "components/text/Text";
-import { useState } from "react";
 import {
   closeAddProjectModal,
   closeAddTaskModal,
@@ -27,9 +27,13 @@ import moment from "moment";
 import { convertDate } from "utils/date";
 import { IconButton, Skeleton } from "@mui/material";
 import { BiSearch } from "react-icons/bi";
+import { axiosInstance } from "services/axiosConfig";
+import { getErrorMessage } from "utils/response-helper";
+import { useToast } from "hooks/toast";
 
 const Projects = () => {
   const { result, isLoading } = useGetProjects();
+
   const { executeSearch, data, isLoading: searchLoading } = useSearchProject();
   const dispatch = useAppDispatch();
   const [projectDetail, setProjectDetail] = useState<any>("");
@@ -91,8 +95,6 @@ const Projects = () => {
   const handleSearch = () => {
     executeSearch(query);
   };
-
-  console.log(data);
 
   return (
     <div>
@@ -160,16 +162,16 @@ const Projects = () => {
                 {result?.map((item: any) => {
                   return (
                     <tr key={item.id} className="data-row">
-                      <td className=" whitespace-nowrap">{item.projectName}</td>
-                      <td className=" whitespace-nowrap">{item.status}</td>
-                      <td className=" whitespace-nowrap">
+                      <td className="whitespace-nowrap">{item.projectName}</td>
+                      <td className="whitespace-nowrap">{item.status}</td>
+                      <td className="whitespace-nowrap">
                         {convertDate(item.startDate)}
                       </td>
-                      <td className=" whitespace-nowrap">
+                      <td className="whitespace-nowrap">
                         {" "}
                         {convertDate(item.endDate)}
                       </td>
-                      <td className=" whitespace-nowrap">
+                      <td className="whitespace-nowrap">
                         {/* <ProgressBar progress={item.Progress} /> */}
                       </td>
 

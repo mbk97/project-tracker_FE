@@ -66,14 +66,17 @@ const EditProject = ({ editItem }: IProps) => {
           <Form.Item
             name={"status"}
             rules={[{ required: true, message: "Required" }]}
-            initialValue="In Progress"
+            initialValue={editItem.status}
           >
-            <input
-              disabled={true}
+            <select
               className="form-field__input"
-              type="text"
-              defaultValue={editItem.status}
-            />
+              placeholder="Enter project name"
+            >
+              <option value={"In Progress"} selected>
+                In Progress
+              </option>
+              {/* <option value={"Completed"}>Completed</option> */}
+            </select>
           </Form.Item>
         </div>
 

@@ -52,7 +52,15 @@ const AddProjects = () => {
             rules={[{ required: true, message: "Required" }]}
             initialValue="In Progress"
           >
-            <input disabled={true} className="form-field__input" type="text" />
+            <select
+              className="form-field__input"
+              placeholder="Enter project name"
+            >
+              <option value={"In Progress"} selected>
+                In Progress
+              </option>
+              {/* <option value={"Completed"}>Completed</option> */}
+            </select>
           </Form.Item>
         </div>
 

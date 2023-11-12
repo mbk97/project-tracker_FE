@@ -1,19 +1,69 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: 66,
+  formData: {
+    id: "",
+    projectId: "",
+    projectName: "",
+    taskName: "",
+    taskDescription: "",
+    taskStartDate: "",
+    taskEndDate: "",
+    taskStatus: "",
+  },
+  taskData: [],
+  projectDetailsData: {
+    _id: "",
+    projectName: "",
+  },
 };
 
 export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    increment: ({ value }) => {
-      value = value + 1;
+    updateFormData: (state, action) => {
+      return {
+        ...state,
+        formData: {
+          ...state.formData,
+          ...action.payload,
+        },
+      };
+    },
+    clearFormData: (state) => {
+      state.formData = {
+        id: "",
+        projectId: "",
+        projectName: "",
+        taskName: "",
+        taskDescription: "",
+        taskStartDate: "",
+        taskEndDate: "",
+        taskStatus: "",
+      };
+    },
+    updateTaskData: (state, action) => {
+      state.taskData = action.payload;
+    },
+    updateProjectDetailsData: (state, action) => {
+      state.projectDetailsData = action.payload;
+    },
+    clearProjectDetailsData: (state) => {
+      state.projectDetailsData = {
+        _id: "",
+        projectName: "",
+      };
     },
   },
 });
 
-export const { increment } = projectSlice.actions;
+export const {
+  clearFormData,
+  updateFormData,
+  updateTaskData,
+  updateProjectDetailsData,
+  clearProjectDetailsData,
+} = projectSlice.actions;
 
 export default projectSlice.reducer;

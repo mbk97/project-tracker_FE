@@ -147,10 +147,34 @@ const useSearchProject = () => {
 
   return { executeSearch, isLoading, data };
 };
+
+const useGetTaskByProjectId = () => {
+  const { toastError, toastSuccess } = useToast();
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+  const getTaskByProjectId = async (id: string) => {
+    try {
+      const response = await axiosInstance.get(`/tasks/${id}`);
+      if (response.status === 200) {
+        // toastSuccess(response.data.message);
+        // dispatch(closeProjectDetailsModal());
+        queryClient.invalidateQueries([projectQueryKeys.getProject]);
+      }
+      return response.data;
+    } catch (error) {
+      const errorMessage = getErrorMessage(error);
+      toastError(errorMessage);
+    }
+  };
+
+  const { mutate, isLoading } = useMutation(getTaskByProjectId);
+  return { mutate, isLoading };
+};
 export {
   useGetProjects,
   useCreateProjects,
   useDeleteProject,
   useEditProject,
   useSearchProject,
+  useGetTaskByProjectId,
 };
