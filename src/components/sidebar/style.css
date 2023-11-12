@@ -9,6 +9,6 @@ a.active-menu {
 
 @media (max-width: 400px) {
   a.active-menu {
-    width: 150px;
+    width: 170px;
   }
 }

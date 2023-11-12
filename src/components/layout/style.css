@@ -1,8 +1,9 @@
 .active-mobile-menu {
   display: block;
   transition: all ease-in-out 0.4s;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 60%;
+  height: 100vh;
 }
