@@ -4,5 +4,7 @@ export const authQueryKeys = {
 };
 export const projectQueryKeys = {
   getProject: "getProject",
-  registerKey: "registerKey",
+};
+export const taskQueryKeys = {
+  getTask: "getTask",
 };

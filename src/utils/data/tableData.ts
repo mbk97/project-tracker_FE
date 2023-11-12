@@ -47,10 +47,6 @@ export const taskHeaderData = [
     text: "End Date",
   },
   {
-    id: 5,
-    text: "Progress",
-  },
-  {
     id: 6,
     text: "Action",
   },

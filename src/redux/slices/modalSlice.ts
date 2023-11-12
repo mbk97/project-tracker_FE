@@ -7,6 +7,8 @@ const initialState = {
   deleteProjectModal: false,
   projectDetailsModal: false,
   taskDetailsModal: false,
+  editTaskModal: false,
+  addTaskFromProjectPage: false,
 };
 
 export const modalSlice = createSlice({
@@ -49,6 +51,18 @@ export const modalSlice = createSlice({
     closeDeleteProjectModal: (state) => {
       state.deleteProjectModal = false;
     },
+    toggleEditTaskModal: (state) => {
+      state.editTaskModal = true;
+    },
+    closeEditTaskModal: (state) => {
+      state.editTaskModal = false;
+    },
+    toggleAddTaskFromProjectPage: (state) => {
+      state.addTaskFromProjectPage = true;
+    },
+    disableAddTaskFromProjectPage: (state) => {
+      state.addTaskFromProjectPage = false;
+    },
   },
 });
 
@@ -65,5 +79,9 @@ export const {
   closeDeleteProjectModal,
   toggleTaskDetailsModal,
   closeTaskDetailsModal,
+  toggleEditTaskModal,
+  closeEditTaskModal,
+  toggleAddTaskFromProjectPage,
+  disableAddTaskFromProjectPage,
 } = modalSlice.actions;
 export default modalSlice.reducer;
